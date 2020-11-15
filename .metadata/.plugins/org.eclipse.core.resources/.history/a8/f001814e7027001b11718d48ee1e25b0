@@ -1,0 +1,5 @@
+package com.br.ilegra.MonitoringFiles.dto;
+
+public class DadosVenda {
+
+}

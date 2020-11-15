@@ -1,0 +1,35 @@
+package com.br.ilegra.MonitoringFiles.service;
+
+import java.nio.file.*;
+
+import static java.nio.file.StandardWatchEventKinds.*;
+
+import java.io.IOException;
+
+public class FileWatchService {
+	
+	
+	 private void monitoring(String pPath) {
+		 	try {
+	            WatchService watcher = FileSystems.getDefault().newWatchService();
+
+	            Path logDir = Paths.get("/Users/kodejava/temp/");
+	            logDir.register(watcher, ENTRY_CREATE);
+
+	            while (true) {
+	                WatchKey key = watcher.take();
+	                for (WatchEvent<?> event : key.pollEvents()) {
+	                    WatchEvent.Kind<?> kind = event.kind();
+
+	                    if (ENTRY_CREATE.equals(kind)) {
+	                        System.out.println("Entry was created on log dir.");
+	                    }    
+	                }
+	                key.reset();
+	            }
+	        } catch (IOException | InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	 }
+	  
+}

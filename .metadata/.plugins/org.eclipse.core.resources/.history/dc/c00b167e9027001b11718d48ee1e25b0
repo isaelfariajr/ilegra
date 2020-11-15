@@ -1,0 +1,86 @@
+package com.br.ilegra.MonitoringFiles.service;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class FileProcessingService {
+	
+	@Value("${monitoringfile.path_out}")
+	private String pathDestino;
+	
+	@Value("${monitoringfile.file}")
+	private String nameFile;
+	
+	@Autowired
+	FileProcessingInstructionsService instructionProcess;
+	
+	private void genarateResponse(List<String> listaRespota){
+		
+		FileWriter file;
+		File diretorio;
+		try {
+			
+			log.info("Validating if destination directory exists : " + pathDestino);
+			diretorio = new File(pathDestino.trim());
+			if (!diretorio.exists()) {
+				log.info("Creating non-existent directory");
+				diretorio.mkdir();
+				
+			}
+			
+			log.info("Saving File");
+			file = new FileWriter(pathDestino.trim()+"\\"+nameFile);
+			PrintWriter arq = new PrintWriter(file);
+			
+			listaRespota.forEach( resposta -> {
+				arq.print(resposta+"\n");
+			});
+			
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private void readFile(String pPath, String pName) {
+		
+		log.info("Starting processing of file : "+ pName);
+		try {
+		      FileReader arq = new FileReader(pPath+"\\"+pName);
+		      BufferedReader lerArq = new BufferedReader(arq);
+
+		      String linha = lerArq.readLine(); 
+		      while (linha != null) {
+		    	if (!linha.isEmpty()) {
+		    		instructionProcess.process(linha);
+		    	}
+		    	linha = lerArq.readLine(); 
+		      }
+
+		      arq.close();
+		      
+		} catch (IOException e) {
+		   log.error("Error processing the file : " + pName+" Error : " + e.getMessage());
+		}
+		log.info("Finishing file processing : "+ pName);
+	}
+    
+	public void read(String pPath, String pName) {
+		readFile(pPath, pName);
+		genarateResponse(instructionProcess.getResponse());
+	}
+}

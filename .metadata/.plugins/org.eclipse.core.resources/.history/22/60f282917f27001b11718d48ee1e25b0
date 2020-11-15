@@ -1,0 +1,27 @@
+package com.br.ilegra.MonitoringFiles.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.br.ilegra.MonitoringFiles.dto.DadosClienteDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendaDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendaItensDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendedorDTO;
+
+@Component
+public class ResponseInstruction {
+
+	List<String> listaResposta = new ArrayList<String>();
+	
+	private List<String> generateReponse(List<DadosVendedorDTO> listaVendedores, List<DadosClienteDTO> listaCliente, List<DadosVendaItensDTO> listaItensVenda){
+		
+	}
+	
+	
+	public List<String> response(List<DadosVendedorDTO> listaVendedores, List<DadosClienteDTO> listaCliente, List<DadosVendaDTO> listaVenda ){
+		return generateReponse(listaVendedores,listaCliente,listaVenda);
+	}
+	
+}

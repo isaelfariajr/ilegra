@@ -1,0 +1,8 @@
+package com.br.ilegra.MonitoringFiles.Component;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class ResponseInstruction {
+
+}

@@ -1,0 +1,15 @@
+package com.br.ilegra.MonitoringFiles;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.br.ilegra.MonitoringFiles.service.FileProcessingService;
+
+@SpringBootApplication
+public class MonitoringFileApplication {
+	
+	public static void main(String[] args) {
+		//FileProcessingService monit = new FileProcessingService();
+		//monit.read("D:\\Workspace_outros", "arquivo.txt");
+	}
+
+}

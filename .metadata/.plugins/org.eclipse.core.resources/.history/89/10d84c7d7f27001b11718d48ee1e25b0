@@ -1,0 +1,14 @@
+package com.br.ilegra.MonitoringFiles.Component;
+
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class ResponseInstruction {
+
+	List<String> listaResposta = new ArrayList<String>();
+	
+	public  
+	
+}

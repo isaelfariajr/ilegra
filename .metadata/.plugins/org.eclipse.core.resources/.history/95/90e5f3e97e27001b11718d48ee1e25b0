@@ -1,0 +1,138 @@
+package com.br.ilegra.MonitoringFiles.Component;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.br.ilegra.MonitoringFiles.dto.DadosClienteDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendaDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendaItensDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendedorDTO;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Component
+public class FileProcessingInstructions {
+
+	
+	@Value("${monitoringfile.separador}")
+	private String separador;
+	
+	private List<DadosVendedorDTO> listaVendedores = new ArrayList<DadosVendedorDTO>();
+	private List<DadosClienteDTO> listaCliente = new ArrayList<DadosClienteDTO>();
+	private List<DadosVendaDTO> listaVenda = new ArrayList<DadosVendaDTO>();
+	private List<DadosVendaItensDTO> listaItensVenda = new ArrayList<DadosVendaItensDTO>();
+	
+	private void readType01(String pLinha){
+		
+		DadosVendedorDTO vendedor = new DadosVendedorDTO();
+		
+		List<String> itens = Arrays.asList(pLinha.split("\\s*ç\\s*"));
+		
+		if (!itens.isEmpty()){ 
+			vendedor.setCpf(Long.parseLong(itens.get(1)));
+			vendedor.setName(itens.get(2));
+			vendedor.setSalary(new BigDecimal(itens.get(3)));
+			
+			listaVendedores.add(vendedor);
+		}
+		
+	}
+	
+	private void readType02(String pLinha){
+		
+		DadosClienteDTO cliente = new DadosClienteDTO();
+		
+		List<String> itens = Arrays.asList(pLinha.split("\\s*ç\\s*"));
+		
+		if (!itens.isEmpty()){ 
+			cliente.setCnpj(Long.parseLong(itens.get(1)));
+			cliente.setNome(itens.get(2));
+			cliente.setBusinessArea(itens.get(3));
+			
+			listaCliente.add(cliente);
+		}
+		
+	}
+	
+	private List<DadosVendaItensDTO> getItensVenda(String pItens){
+		
+		String vItens = pItens.replace("[", "");
+		vItens = vItens.replace("]", "");
+		
+		List<String> itens = Arrays.asList(pItens.split("\\s*,\\s*"));
+		
+		for(int i=0; i < itens.size(); i++) {
+			
+			String infoItem = itens.get(i);
+			
+			List<String> info = Arrays.asList(infoItem.split("\\s*-\\s*"));
+			
+			if (i==0) {
+				for(int j=0; j < info.size(); j++) {
+					DadosVendaItensDTO vendaItens = new DadosVendaItensDTO();
+					String id = info.get(j);
+					id = id.replace("[", "");
+					id = id.replace("]", "");
+					vendaItens.setIdItem(Long.parseLong(id));
+					listaItensVenda.add(vendaItens);
+				}
+			}else {
+				for(int j=0; j < itens.size(); j++) {
+					if (i == 1) {
+						String qtd = info.get(j);
+						qtd = qtd.replace("[", "");
+						qtd = qtd.replace("]", "");
+						listaItensVenda.get(j).setQuantityItem(new BigDecimal(qtd));
+					}
+					else {
+						String value = info.get(j);
+						value = value.replace("[", "");
+						value = value.replace("]", "");
+						listaItensVenda.get(j).setPrice(new BigDecimal(value));
+					}
+				}
+			}
+		}
+		
+		return listaItensVenda;
+	}
+	
+	
+	private void readType03(String pLinha){
+	
+		DadosVendaDTO venda = new DadosVendaDTO();
+		List<String> itens = Arrays.asList(pLinha.split("\\s*ç\\s*"));
+		
+		if (!itens.isEmpty()){ 
+			venda.setSale(Long.parseLong(itens.get(1)));
+			venda.setItens(getItensVenda(itens.get(2)));
+			venda.setSalesmanName(itens.get(3));
+			listaVenda.add(venda);
+		}
+	}
+	
+	public void process(String pLinha){
+		
+		if (pLinha.substring(0,3).equals("001")){
+			
+			log.info("Process record of type 001");
+    		readType01(pLinha);
+    	}
+    	
+    	if (pLinha.substring(0,3).equals("002")){
+    		log.info("Process record of type 002");
+    		readType02(pLinha);
+    	}
+    	
+    	if (pLinha.substring(0,3).equals("003")){
+    		log.info("Process record of type 003");
+    		readType03(pLinha);
+    	} 
+	}
+}

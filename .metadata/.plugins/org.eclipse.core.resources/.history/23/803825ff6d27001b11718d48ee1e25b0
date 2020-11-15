@@ -1,0 +1,6 @@
+package com.br.ilegra.MonitoringFiles;
+
+@SpringBootApplication
+public class MonitoringFileApplication {
+
+}

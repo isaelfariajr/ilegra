@@ -1,0 +1,4 @@
+Quantidade de cliente do arquivo : 2
+Quantidade de vendedores do arquivo : 2
+ID da venda mais cara : 8
+O pior vendedor : Pedro

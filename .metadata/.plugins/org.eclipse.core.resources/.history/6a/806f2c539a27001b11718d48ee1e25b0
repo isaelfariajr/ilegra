@@ -1,0 +1,122 @@
+package com.br.ilegra.MonitoringFiles.service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.br.ilegra.MonitoringFiles.dto.DadosClienteDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendaDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendedorDTO;
+import com.br.ilegra.MonitoringFiles.dto.VendedorValorDTO;
+
+@Component
+public class ResponseInstructionService {
+
+	private List<String> listaResposta = new ArrayList<String>();
+    private List<VendedorValorDTO> listaVendValor = new ArrayList<VendedorValorDTO>();
+	private BigDecimal valorAtual;	
+    private BigDecimal valorAnterior;
+    private Long  idVenda;
+    private String vendedor;
+    
+    
+    private Long getIdVenda(List<DadosVendaDTO> listaVenda) {
+		
+    	listaVendValor.clear();
+    	
+		listaVenda.forEach(vendas ->{
+			
+			valorAtual = new BigDecimal(0);
+			valorAnterior = new BigDecimal(0);
+			
+			VendedorValorDTO venVal = new VendedorValorDTO();
+			
+			vendas.getItens().forEach(vendasVend -> {
+				
+				valorAtual = vendasVend.getQuantityItem().multiply(vendasVend.getPrice());
+				
+				if (valorAtual.compareTo(valorAnterior) >= 0) {
+					valorAnterior = valorAtual;
+					idVenda = vendas.getSale();
+				}else {
+					valorAtual = valorAnterior;
+				}
+				
+			});
+			
+			venVal.setName(vendas.getSalesmanName());
+			venVal.setValue(valorAtual);
+			venVal.setIdVenda(vendas.getSale());
+			listaVendValor.add(venVal);
+		});
+		
+		
+		valorAnterior = new BigDecimal(0);
+		listaVendValor.forEach( vendor -> {
+			
+			if (vendor.getValue().compareTo(valorAnterior) > 0) {
+				idVenda = vendor.getIdVenda();
+				valorAnterior = vendor.getValue();
+			}
+			
+		});
+    	
+		return idVenda;
+    }
+    
+    private String getPior(List<DadosVendaDTO> listaVenda) {
+    	
+    	listaVendValor.clear();
+    	
+    	listaVenda.forEach(vendas ->{
+			
+			valorAtual = new BigDecimal(0);
+			
+			VendedorValorDTO venVal = new VendedorValorDTO();
+			
+			vendas.getItens().forEach(vendasVend -> {
+				valorAtual = valorAtual.add(vendasVend.getQuantityItem().multiply(vendasVend.getPrice()));
+			});
+			
+			venVal.setName(vendas.getSalesmanName());
+			venVal.setValue(valorAtual);
+			listaVendValor.add(venVal);
+		});
+    	
+    	for (int i=0; i < listaVendValor.size(); i++) {
+    		
+    		if (i == 0) {
+    			vendedor = listaVendValor.get(i).getName();
+    		}else {
+    			if (listaVendValor.get(i).getValue().compareTo(listaVendValor.get(i-1).getValue()) < 0) {
+    				vendedor = listaVendValor.get(i).getName();
+    			}
+    		}
+    		
+    	}
+		
+		return vendedor;
+    }    
+    
+			
+	
+	private List<String> generateReponse(List<DadosVendedorDTO> listaVendedores, List<DadosClienteDTO> listaCliente, List<DadosVendaDTO> listaVenda){
+		
+		listaResposta.clear();
+		listaResposta.add("Quantidade de cliente do arquivo : " + listaCliente.size());
+		listaResposta.add("Quantidade de vendedores do arquivo : " + listaVendedores.size());	
+		listaResposta.add("ID da venda mais cara : " + getIdVenda(listaVenda));
+		listaResposta.add("O pior vendedor : " + getPior(listaVenda));
+		
+		
+		return listaResposta;
+	}
+	
+	
+	public List<String> response(List<DadosVendedorDTO> listaVendedores, List<DadosClienteDTO> listaCliente, List<DadosVendaDTO> listaVenda){
+		return generateReponse(listaVendedores,listaCliente,listaVenda);
+	}
+	
+}

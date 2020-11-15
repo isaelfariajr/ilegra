@@ -1,0 +1,16 @@
+1605463375356	Delete element
+1605463633563	Delete element
+1605464331559	Rename type 'MonitoringPath'
+1605464909695	Rename type 'DadosCliente'
+1605464919494	Rename type 'DadosVenda'
+1605464939445	Rename type 'DadosVendedor'
+1605470130357	Rename type 'MonitoringPathFileService'
+1605470185347	Rename type 'FileReaderInstructions'
+1605470209543	Rename type 'MonitoringRedFileService'
+1605474712893	Rename package 'com.br.ilegra.MonitoringFiles.Component'
+1605474903587	Delete element
+1605475003076	Rename compilation unit 'ResponseInstruction.java'
+1605475218881	Rename type 'MonitoringFileService'
+1605475419344	Delete element
+1605478528283	Delete element
+1605479081325	Delete element

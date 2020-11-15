@@ -1,0 +1,15 @@
+package com.br.ilegra.MonitoringFiles.service;
+
+import java.io.File;
+
+import javax.swing.event.EventListenerList;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class MonitoringPath {
+
+	 private EventListenerList eventList = null;
+     private File poolDir = null;
+	
+}

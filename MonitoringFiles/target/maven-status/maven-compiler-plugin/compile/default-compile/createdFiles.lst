@@ -1,0 +1,11 @@
+com\br\ilegra\MonitoringFiles\service\ResponseInstructionService.class
+com\br\ilegra\MonitoringFiles\MonitoringFileApplication.class
+com\br\ilegra\MonitoringFiles\service\FileProcessingInstructionsService.class
+com\br\ilegra\MonitoringFiles\service\FileProcessingService.class
+com\br\ilegra\MonitoringFiles\service\FileWatchService.class
+com\br\ilegra\MonitoringFiles\dto\DadosClienteDTO.class
+com\br\ilegra\MonitoringFiles\dto\DadosVendaDTO.class
+com\br\ilegra\MonitoringFiles\dto\DadosVendaItensDTO.class
+com\br\ilegra\MonitoringFiles\service\MonitoringPathService.class
+com\br\ilegra\MonitoringFiles\dto\DadosVendedorDTO.class
+com\br\ilegra\MonitoringFiles\dto\VendedorValorDTO.class

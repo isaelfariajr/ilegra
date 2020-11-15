@@ -1,0 +1,10 @@
+package com.br.ilegra.MonitoringFiles.dto;
+
+import lombok.Data;
+
+@Data
+public class DadosVendaDTO {
+
+	private Long sale;
+	private List<DadosVendaItensDTO> itens;
+}

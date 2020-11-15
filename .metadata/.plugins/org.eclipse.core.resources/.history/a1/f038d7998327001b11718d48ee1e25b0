@@ -1,0 +1,84 @@
+package com.br.ilegra.MonitoringFiles.Component;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.br.ilegra.MonitoringFiles.dto.DadosClienteDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendaDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendedorDTO;
+import com.br.ilegra.MonitoringFiles.dto.VendedorValorDTO;
+
+@Component
+public class ResponseInstruction {
+
+	private List<String> listaResposta = new ArrayList<String>();
+    private BigDecimal valorAtual;	
+    private BigDecimal valorAnterior;
+    private String bigVendor;
+    
+    private String getVendor(List<DadosVendaDTO> listaVenda) {
+    	
+		List<VendedorValorDTO> listaVendValor = new ArrayList<VendedorValorDTO>();
+		listaVenda.forEach(vendas ->{
+			
+			valorAtual = new BigDecimal(0);
+			valorAnterior = new BigDecimal(0);
+			
+			VendedorValorDTO venVal = new VendedorValorDTO();
+			
+			vendas.getItens().forEach(vendasVend -> {
+				
+				valorAtual = vendasVend.getQuantityItem().multiply(vendasVend.getPrice());
+				
+				if (valorAtual.compareTo(valorAnterior) >= 0) {
+					valorAnterior = valorAtual;
+				}else {
+					valorAtual = valorAnterior;
+				}
+				
+			});
+			
+			venVal.setName(vendas.getSalesmanName());
+			venVal.setValue(valorAtual);
+			listaVendValor.add(venVal);
+		});
+		
+		
+		valorAnterior = new BigDecimal(0);
+		listaVendValor.forEach( vendor -> {
+			
+			if (vendor.getValue().compareTo(valorAnterior) > 0) {
+				bigVendor = vendor.getName();
+				valorAnterior = vendor.getValue();
+			}
+			
+		});
+    	
+		
+		return bigVendor;
+    }
+    
+			
+	
+	private List<String> generateReponse(List<DadosVendedorDTO> listaVendedores, List<DadosClienteDTO> listaCliente, List<DadosVendaDTO> listaVenda){
+		
+		listaResposta.clear();
+		listaResposta.add("Quantidade de cliente do arquivo : " + listaCliente.size());
+		listaResposta.add("Quantidade de vendedores do arquivo : " + listaVendedores.size());	
+		
+		
+
+		
+		
+		return listaResposta;
+	}
+	
+	
+	public List<String> response(List<DadosVendedorDTO> listaVendedores, List<DadosClienteDTO> listaCliente, List<DadosVendaDTO> listaVenda){
+		return generateReponse(listaVendedores,listaCliente,listaVenda);
+	}
+	
+}

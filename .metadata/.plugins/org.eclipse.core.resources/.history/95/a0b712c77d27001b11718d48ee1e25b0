@@ -1,0 +1,58 @@
+package com.br.ilegra.MonitoringFiles.service;
+
+import org.springframework.stereotype.Service;
+
+import com.br.ilegra.MonitoringFiles.Component.FileProcessingInstructions;
+import com.br.ilegra.MonitoringFiles.dto.DadosClienteDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendaDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendaItensDTO;
+import com.br.ilegra.MonitoringFiles.dto.DadosVendedorDTO;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class MonitoringFileService {
+	
+	
+	@Autowired
+	FileProcessingInstructions instructionProcess;
+	
+	
+	private void readFile(String pPath, String pName) {
+		
+		
+		try {
+		      FileReader arq = new FileReader(pPath+"\\"+pName);
+		      BufferedReader lerArq = new BufferedReader(arq);
+
+		      String linha = lerArq.readLine(); 
+		      while (linha != null) {
+		    	instructionProcess.process(linha);
+		    	linha = lerArq.readLine(); // lê da segunda até a última linha
+		      }
+
+		      arq.close();
+		    } catch (IOException e) {
+		        System.err.printf("Erro na abertura do arquivo: %s.\n",
+		        e.getMessage());
+		    }
+	}
+	
+	public void read(String pPath, String pName) {
+		readFile(pPath, pName);
+	}
+	
+
+}

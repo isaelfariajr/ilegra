@@ -1,0 +1,11 @@
+package com.br.ilegra.MonitoringFiles.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class MonitoringPathFileService {
+	
+	@Value("${gescart.url}")
+	private String separador;
+
+}

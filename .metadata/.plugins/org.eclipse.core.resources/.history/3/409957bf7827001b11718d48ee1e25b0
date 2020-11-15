@@ -1,0 +1,19 @@
+package com.br.ilegra.MonitoringFiles;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.event.EventListener;
+
+@SpringBootApplication
+public class MonitoringFileApplication {
+	
+	@EventListener(MonitoringFileApplication.class)
+	public void doSomethingAfterStartup() {
+	    System.out.println("hello world, I have just started up");
+	}
+	
+	public static void main(String[] args) {
+		SpringApplication.run(MonitoringFileApplication.class, args);
+	}
+
+}

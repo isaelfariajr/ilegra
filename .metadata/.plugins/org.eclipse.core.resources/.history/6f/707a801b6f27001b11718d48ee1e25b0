@@ -1,0 +1,6 @@
+package com.br.ilegra.MonitoringFiles.service;
+
+@Service
+public class MonitoringPathFileService {
+
+}

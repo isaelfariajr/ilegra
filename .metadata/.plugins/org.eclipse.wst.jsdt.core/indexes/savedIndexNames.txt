@@ -1,0 +1,6 @@
+INDEX VERSION 1.4+D:\Workspace_outros\Ilegra\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2665110645.index
+2682069008.index
+2215317321.index
+1139667578.index
+857595737.index

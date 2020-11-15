@@ -1,0 +1,17 @@
+package com.br.ilegra.MonitoringFiles;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.br.ilegra.MonitoringFiles.service.MonitoringRedFileService;
+
+@SpringBootApplication
+public class MonitoringFileApplication {
+	
+	
+	
+	public static void main(String[] args) {
+		MonitoringRedFileService monit = new MonitoringRedFileService();
+		//monit.readFile();
+	}
+
+}

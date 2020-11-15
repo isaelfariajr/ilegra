@@ -1,0 +1,6 @@
+package com.br.ilegra.MonitoringFiles.Component;
+
+@Component
+public class FileReaderInstructions {
+
+}

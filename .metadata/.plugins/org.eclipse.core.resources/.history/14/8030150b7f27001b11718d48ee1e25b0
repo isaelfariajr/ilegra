@@ -1,0 +1,6 @@
+package com.br.ilegra.MonitoringFiles.Component;
+
+@Componet
+public class ResponseInstruction {
+
+}

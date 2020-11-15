@@ -1,0 +1,51 @@
+package com.br.ilegra.MonitoringFiles.service;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.br.ilegra.MonitoringFiles.Component.FileProcessingInstructions;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class MonitoringFileService {
+	
+	
+	//@Autowired
+	//FileProcessingInstructions instructionProcess;
+	
+	private void readFile(String pPath, String pName) {
+		
+		FileProcessingInstructions ins = new FileProcessingInstructions ();
+		
+		log.info("Starting processing of file : "+ pName);
+		try {
+		      FileReader arq = new FileReader(pPath+"\\"+pName);
+		      BufferedReader lerArq = new BufferedReader(arq);
+
+		      String linha = lerArq.readLine(); 
+		      while (linha != null) {
+		    	if (!linha.isEmpty()) {
+		    	
+		    	}
+		    	linha = lerArq.readLine(); 
+		      }
+
+		      arq.close();
+		} catch (IOException e) {
+		   log.error("Error processing the file : " + pName+" Error : " + e.getMessage());
+		}
+		log.info("Finishing file processing : "+ pName);
+	}
+	
+	public void read(String pPath, String pName) {
+		readFile(pPath, pName);
+	}
+	
+
+}
